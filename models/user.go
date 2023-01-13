@@ -1,13 +1,13 @@
 package models
 
 type Address struct {
-	Province string
-	City     string
-	Postcode string
+	Province string `json:"province" bson:"province"`
+	City     string `json:"city" bson:"city"`
+	Postcode string `json:"postcode" bson:"postcode"`
 }
 
 type User struct {
-	Name    string
-	Age     int
-	Address Address
+	Name    string  `json:"name" bson:"user_name"`
+	Age     int     `json:"age" bson:"user_age"`
+	Address Address `json:"address" bson:"user_address"`
 }
