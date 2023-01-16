@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"userapi.com/models"
 	"userapi.com/services"
 )
 
@@ -16,6 +19,11 @@ func New(userservice services.UserService) UserController {
 }
 
 func (uc *UserController) CreateUser(ctx *gin.Context) {
+	var user models.User
+	if err := ctx.ShouldBindJSON(&user); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
 	ctx.JSON(200, "")
 }
 
