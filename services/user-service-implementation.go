@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"userapi.com/models"
 )
@@ -25,7 +26,10 @@ func (u *UserServiceImpl) CreateUser(user *models.User) error {
 }
 
 func (u *UserServiceImpl) GetUser(name *string) (*models.User, error) {
-	return nil, nil
+	var user *models.User
+	query := bson.D{bson.E{Key: "name", Value: name}}
+	err := u.usercollection.FindOne(u.ctx, query).Decode(&user)
+	return user, err
 }
 
 func (u *UserServiceImpl) GetAll() ([]*models.User, error) {
