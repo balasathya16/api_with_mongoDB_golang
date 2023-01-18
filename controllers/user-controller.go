@@ -84,3 +84,5 @@ func (uc *UserController) RegisterUserRoutes(rg *gin.RouterGroup) {
 	userroute.DELETE("/delete/:name", uc.DeleteUser)
 
 }
+
+test
