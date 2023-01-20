@@ -36,7 +36,12 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("mongo connection established")
+	fmt.Println("mongo connection success")
+
+	usercollection = mongoclient.Database("userdb").Collection("users")
+	userservice = services.NewUserService(usercollection, ctx)
+	usercontroller = controllers.New(userservice)
+	server = gin.Default()
 }
 
 func main() {
