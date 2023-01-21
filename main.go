@@ -26,8 +26,8 @@ var (
 func init() {
 	ctx = context.TODO()
 
-	mongoconn := options.Client().ApplyURI("mongodb://localhost:27017")
-	mongoclient, err := mongo.Connect(ctx, mongoconn)
+	mongoconn := options.Client().ApplyURI("mongodb+srv://balasathya16:%40uru$!(f@cluster0.lmdpzzn.mongodb.net/test")
+	mongoclient, err := mongo.Connect(ctx, mongoconn) // add env variables
 
 	if err != nil {
 		log.Fatal(err)
@@ -45,5 +45,11 @@ func init() {
 }
 
 func main() {
+	defer mongoclient.Disconnect(ctx)
+
+	basepath := server.Group("/v1")
+	usercontroller.RegisterUserRoutes(basepath)
+
+	log.Fatal(server.Run(":8000"))
 
 }
