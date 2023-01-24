@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"userapi.com/controllers"
 	"userapi.com/services"
@@ -26,9 +27,12 @@ var (
 func init() {
 	ctx = context.TODO()
 
-	mongoconn := options.Client().ApplyURI("mongodb+srv://balasathya16:%40uru$!(f@cluster0.lmdpzzn.mongodb.net/test")
-	mongoclient, err := mongo.Connect(ctx, mongoconn) // add env variables
-
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	uri := os.Getenv("MONGODB_URI")
+	mongoclient, err := mongo.Connect(ctx, uri) // need to fix godotenv
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,6 +49,7 @@ func init() {
 }
 
 func main() {
+
 	defer mongoclient.Disconnect(ctx)
 
 	basepath := server.Group("/v1")
