@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"userapi.com/controllers"
 	"userapi.com/services"
@@ -25,20 +25,21 @@ var (
 )
 
 func init() {
+
+	username := os.Getenv("MONGO_USERNAME")
+	password := os.Getenv("MONGO_PASSWORD")
+
 	ctx = context.TODO()
 
-	err := godotenv.Load()
+	mongoconn := options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@cluster0.mongodb.net/test?retryWrites=true&w=majority", username, password))
+
+	mongoclient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	uri := os.Getenv("MONGODB_URI")
-	mongoclient, err := mongo.Connect(ctx, uri) // need to fix godotenv
-	if err != nil {
-		log.Fatal(err)
+		log.Fatal("error while connecting with mongo", err)
 	}
 	err = mongoclient.Ping(ctx, readpref.Primary())
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("error while trying to ping mongo", err)
 	}
 	fmt.Println("mongo connection success")
 
