@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,12 +25,12 @@ var (
 
 func init() {
 
-	username := os.Getenv("MONGO_USERNAME")
-	password := os.Getenv("MONGO_PASSWORD")
+	//username := os.Getenv("MONGO_USERNAME")
+	//password := os.Getenv("MONGO_PASSWORD")
 
 	ctx = context.TODO()
 
-	mongoconn := options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@cluster0.mongodb.net/test?retryWrites=true&w=majority", username, password))
+	mongoconn := options.Client().ApplyURI(("mongodb+srv://balasathya16:%40uru$!(f@cluster0.lmdpzzn.mongodb.net/?retryWrites=true&w=majority"))
 
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
